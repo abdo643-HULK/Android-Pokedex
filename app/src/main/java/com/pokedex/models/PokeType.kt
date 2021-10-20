@@ -1,7 +1,6 @@
 package com.pokedex.models
 
 import androidx.compose.ui.graphics.Color
-import com.pokedex.R
 
 enum class PokeType(val type: String) {
     Normal("normal"),
@@ -25,31 +24,31 @@ enum class PokeType(val type: String) {
     Shadow("shadow"),
     Unknown("unknown");
 
-    var color: Color =
+    var color: Color
         get() {
-        return when (this) {
-            Normal -> Color(0xA8A77A)
-            Fire -> Color(0xEE8130)
-            Water -> Color(0x6390F0)
-            Electric -> Color(0xF7D02C)
-            Grass -> Color(0x7AC74C)
-            Ice -> Color(0x96D9D6)
-            Fighting -> Color(0xC22E28)
-            Poison -> Color(0xA33EA1)
-            Ground -> Color(0xE2BF65)
-            Flying -> Color(0xA98FF3)
-            Psychic -> Color(0xF95587)
-            Bug -> Color(0xA6B91A)
-            Rock -> Color(0xB6A136)
-            Ghost -> Color(0x735797)
-            Dragon -> Color(0x6F35FC)
-            Dark -> Color(0x705746)
-            Steel -> Color(0xB7B7CE)
-            Fairy -> Color(0xD685AD)
-            Shadow -> Color(0x000000)
-            Unknown -> Color(0xffffff)
+            return when (this) {
+                Normal -> Color(0xA8A77A)
+                Fire -> Color(0xEE8130)
+                Water -> Color(0x6390F0)
+                Electric -> Color(0xF7D02C)
+                Grass -> Color(0x7AC74C)
+                Ice -> Color(0x96D9D6)
+                Fighting -> Color(0xC22E28)
+                Poison -> Color(0xA33EA1)
+                Ground -> Color(0xE2BF65)
+                Flying -> Color(0xA98FF3)
+                Psychic -> Color(0xF95587)
+                Bug -> Color(0xA6B91A)
+                Rock -> Color(0xB6A136)
+                Ghost -> Color(0x735797)
+                Dragon -> Color(0x6F35FC)
+                Dark -> Color(0x705746)
+                Steel -> Color(0xB7B7CE)
+                Fairy -> Color(0xD685AD)
+                Shadow -> Color(0x000000)
+                Unknown -> Color(0xffffff)
+            }
         }
-    }
 
     companion object {
         fun from(rawValue: String): PokeType = PokeType.values().first { it.type == rawValue }
@@ -79,6 +78,8 @@ enum class PokeType(val type: String) {
 //     Unkown("unknown");
 
 
+
+
 //     var color: String = ""
 //         get() {
 //             return when (this) {
@@ -104,6 +105,8 @@ enum class PokeType(val type: String) {
 //                 Unkown -> "#ffffff"
 //             }
 //         }
+
+
 
 
 //     companion object {
