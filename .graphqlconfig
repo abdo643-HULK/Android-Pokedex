@@ -1,0 +1,4 @@
+{
+  "name": "PokeApi",
+  "schemaPath": "./app/src/main/graphql/com/pokedex/schema.json"
+}
