@@ -1,6 +1,8 @@
 package com.pokedex.models
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+
 
 enum class PokeType(val type: String) {
     Normal("normal"),
@@ -24,7 +26,10 @@ enum class PokeType(val type: String) {
     Shadow("shadow"),
     Unknown("unknown");
 
-    var color: Color
+    val context = LocalContext.current
+
+    var color: Color? = null
+        private set
         get() {
             return when (this) {
                 Normal -> Color(0xA8A77A)
@@ -46,12 +51,12 @@ enum class PokeType(val type: String) {
                 Steel -> Color(0xB7B7CE)
                 Fairy -> Color(0xD685AD)
                 Shadow -> Color(0x000000)
-                Unknown -> Color(0xffffff)
+                Unknown -> null
             }
         }
 
     companion object {
-        fun from(rawValue: String): PokeType = PokeType.values().first { it.type == rawValue }
+        fun from(rawValue: String): PokeType = values().first { it.type == rawValue }
     }
 }
 
@@ -76,8 +81,6 @@ enum class PokeType(val type: String) {
 //     Fairy("fairy"),
 //     Shadow("shadow"),
 //     Unkown("unknown");
-
-
 
 
 //     var color: String = ""
@@ -105,8 +108,6 @@ enum class PokeType(val type: String) {
 //                 Unkown -> "#ffffff"
 //             }
 //         }
-
-
 
 
 //     companion object {
