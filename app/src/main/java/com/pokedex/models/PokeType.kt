@@ -26,8 +26,6 @@ enum class PokeType(val type: String) {
     Shadow("shadow"),
     Unknown("unknown");
 
-    val context = LocalContext.current
-
     var color: Color? = null
         private set
         get() {
