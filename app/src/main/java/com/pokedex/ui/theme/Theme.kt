@@ -7,6 +7,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 
 private val LightColorPalette = lightColors(
@@ -38,7 +39,7 @@ fun PokedexTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
     val colors by if (darkTheme) LoadDarkColors() else LoadLightColors()
 
     MaterialTheme(
-        colors = colors.value,
+        colors = colors,
         typography = Typography,
         shapes = Shapes,
         content = content

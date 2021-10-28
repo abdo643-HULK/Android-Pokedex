@@ -20,6 +20,6 @@ data class PokemonDetails(
         val isFormSwitchable: Boolean?,
         val hasGenderDiff: Boolean?,
         val genderRate: GenderRates?,
-        val evoltutions: List<Evolution?>,
+        val evolutions: List<Evolution?>,
         val forms: List<PokemonForm>
 ) {}
