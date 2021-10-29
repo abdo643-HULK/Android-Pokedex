@@ -11,9 +11,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pokedex.PreviewWithMainScreen
+import com.pokedex.screens.PokemonList.PokemonListViewModel
 
 @Composable
-fun PokemonListScreen(navController: NavController) {
+fun PokemonListScreen(
+    navController: NavController,
+    viewModel: PokemonListViewModel = PokemonListViewModel()
+) {
+    val pokemonsList = viewModel.pokemons
     Text(
         "PokemonList",
         fontSize = 30.sp

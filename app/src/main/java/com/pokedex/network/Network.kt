@@ -3,38 +3,59 @@
 package com.pokedex.network
 
 import android.util.Log
+import androidx.compose.ui.text.capitalize
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.ApolloQueryCall
+import com.apollographql.apollo.api.Input
+import com.apollographql.apollo.api.Operation
+import com.apollographql.apollo.api.Query
+import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
+import com.pokedex.GenerationQuery
 import com.pokedex.PokemonDetailsQuery
 import com.pokedex.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.jetbrains.annotations.NotNull
 import java.net.URL
+import java.util.*
 
 object Network {
-    val apollo: ApolloClient = ApolloClient.builder().serverUrl("https://beta.pokeapi.co/graphql/v1beta").build()
+    val apollo: ApolloClient =
+        ApolloClient.builder().serverUrl("https://beta.pokeapi.co/graphql/v1beta").build()
+
+    private suspend fun <D: Operation.Data, T, V : Operation.Variables>  runQuery(query: Query<D, T, V>) : T? {
+        val response = try {
+            apollo.query(query).await()
+        } catch (e: ApolloException) {
+            Log.d("Apollo QueryError:", e.toString())
+            null
+        }
+
+        return response?.data
+    }
+
+    suspend fun getPokemonByGeneration(gen: PokemonGenerations) : List<Pokemon?> {
+        val generationList = runQuery(GenerationQuery(Input.fromNullable(gen.generation)))?.pokemon
+
+        return generationList?.map {
+            Pokemon(it.id.toUInt(),
+                it.name.replaceFirstChar(Char::titlecase))
+        } ?: listOf()
+    }
 
     suspend fun getPokemonDetails(id: Int): PokemonDetails? {
-        val response =
-            try {
-                apollo.query(PokemonDetailsQuery(id)).await()
-            } catch (e: ApolloException) {
-                Log.d("PokemonDetails", e.toString())
-                null
-            }
-
-        val pokemon = response?.data?.pokemon
+        val pokemon = runQuery(PokemonDetailsQuery(id))?.pokemon
         val uIntID = id.toUInt()
 
         @Suppress("NAME_SHADOWING")
-        return pokemon?.let { pokemon ->
-            withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
+            pokemon?.let { pokemon ->
                 PokemonDetails(
                     id = uIntID,
                     name = pokemon.name,
-                    imageURL =
-                    URL(
+                    imageURL = URL(
                         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png"
                     ),
                     height = (pokemon.height)?.toFloat() ?: 0f / 10,
