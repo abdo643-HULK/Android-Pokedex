@@ -1,29 +1,38 @@
 package com.pokedex.models
 
-data class GenderRates(val rate: Int)  {
-    val rates =
-            mapOf<Int, Map<String, Float>>(
-                    0 to mapOf("male" to 100f, "female" to 0f),
-                    1 to mapOf("male" to 87.5f, "female" to 12.5f),
-                    2 to mapOf("male" to 75f, "female" to 25f),
-                    3 to mapOf("male" to 62.5f, "female" to 37.5f),
-                    4 to mapOf("male" to 50f, "female" to 50f),
-                    5 to mapOf("male" to 37.5f, "female" to 62.5f),
-                    6 to mapOf("male" to 25f, "female" to 75f),
-                    7 to mapOf("male" to 12.5f, "female" to 87.5f),
-                    8 to mapOf("male" to 0f, "female" to 100f),
-            )
+//private const val MALE = 0
+//private const val FEMALE = 1
 
-    var male: Float = 0f
-    var female: Float = 0f
-    var isGenderLess: Boolean = false
+data class GenderRates(val rate: Int) {
+    // for better optimization the map could
+    // be changed to an array where 0 is male and 1 is female
+    private val rates = arrayOf(
+        mapOf("male" to 100f, "female" to 0f),
+        mapOf("male" to 87.5f, "female" to 12.5f),
+        mapOf("male" to 75f, "female" to 25f),
+        mapOf("male" to 62.5f, "female" to 37.5f),
+        mapOf("male" to 50f, "female" to 50f),
+        mapOf("male" to 37.5f, "female" to 62.5f),
+        mapOf("male" to 25f, "female" to 75f),
+        mapOf("male" to 12.5f, "female" to 87.5f),
+        mapOf("male" to 0f, "female" to 100f),
+    )
 
-    init {
-        if (rate == 0) isGenderLess = true
-        else {
-            val result = rates.get(rate)
-            male = result?.get("male") ?: 0f
-            female = result?.get("female") ?: 0f
-        }
+    val male by lazy {
+        if (rate == -1) return@lazy 0f
+        rates[rate]["male"] ?: 0f
+//        rates[rate][MALE] ?: 0f
     }
+
+    val female by lazy {
+        if (rate == -1) return@lazy 0f
+        rates[rate]["female"] ?: 0f
+//        rates[rate][FEMALE] ?: 0f
+    }
+
+    val isGenderLess by lazy {
+        if (rate != -1) return@lazy false
+        true
+    }
+
 }
