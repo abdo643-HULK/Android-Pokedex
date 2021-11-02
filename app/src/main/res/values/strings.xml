@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="default_web_client_id">Hi</string>
 </resources>
