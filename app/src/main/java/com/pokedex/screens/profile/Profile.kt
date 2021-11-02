@@ -1,5 +1,7 @@
-package com.pokedex.screens
+@file:OptIn(ExperimentalAnimationApi::class)
+package com.pokedex.screens.profile
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
