@@ -9,15 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.graphics.Color
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
+    primary = Color.Black,
+    primaryVariant = Purple500,
     secondary = Teal200,
-    background = LightBG
+    background = LightBG,
+    surface = LightBG,
     /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
@@ -26,17 +26,18 @@ private val LightColorPalette = lightColors(
 )
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
+    primary = Color.White,
     primaryVariant = Purple700,
     secondary = Teal200,
-    background = DarkGB
+    background = DarkGB,
+    surface = DarkGB,
 )
 
 
 @Composable
 fun PokedexTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
-//    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
-    val colors by if (darkTheme) LoadDarkColors() else LoadLightColors()
+    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
+//    val colors by if (darkTheme) LoadDarkColors() else LoadLightColors()
 
     MaterialTheme(
         colors = colors,
