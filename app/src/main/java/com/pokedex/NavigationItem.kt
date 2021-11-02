@@ -1,8 +1,26 @@
 package com.pokedex
 
 import androidx.annotation.DrawableRes
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
-sealed class NavigationItem(var route: String, @DrawableRes var icon: Int, var title: String) {
-    object PokemonList : NavigationItem("pokemon-list", R.drawable.ic_pokeball, "Pokemon")
-    object Profile : NavigationItem("profile", R.drawable.ic_outline_person_24, "Profile")
+sealed class BottomNavigationItem(
+    val route: String,
+    val title: String,
+    @DrawableRes val icon: Int,
+) {
+    object PokemonList : BottomNavigationItem("pokemon-list", "Pokemon", R.drawable.ic_pokeball)
+    object Profile : BottomNavigationItem("profile", "Profile", R.drawable.ic_outline_person_24)
+    object Favourites : BottomNavigationItem("favourites", "Favourites", R.drawable.ic_outline_person_24)
+}
+
+sealed class NavigationItem(val route: String, val arguments: List<NamedNavArgument>) {
+    object PokemonDetails :
+        NavigationItem(
+            "pokemon-details",
+            arguments = listOf(navArgument("pokemonId") {
+                type = NavType.IntType
+            })
+        )
 }

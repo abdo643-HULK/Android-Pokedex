@@ -16,7 +16,7 @@ fun TopBar() {
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
         backgroundColor = MaterialTheme.colors.background,
-        contentColor = Color.Black
+        contentColor = MaterialTheme.colors.primary
     )
 }
 
