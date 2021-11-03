@@ -58,7 +58,7 @@ object Network {
                 ),
                 height = (pokemon.height)?.toFloat() ?: 0f / 10,
                 weight = (pokemon.weight)?.toFloat() ?: 0f / 10,
-                types = pokemon.typeDetails.map { it.types?.name ?: "" },
+                types = pokemon.typeDetails.map { PokemonType.from(it.types?.name ?: "") },
                 abilities =
                 pokemon.abilities.map {
                     Ability(slot = (it.slot).toUInt(), name = it.ability?.name ?: "")
@@ -101,9 +101,8 @@ object Network {
                     GenderRates(it)
                 },
                 evolutions = pokemon.species?.evolutions?.info?.map { ev ->
-                    ev.evolutionDetails.isNotEmpty().let {
+                    if (ev.evolutionDetails.isNotEmpty()) {
                         val details = ev.evolutionDetails[0]
-
                         Evolution(
                             name = ev.name,
                             previousEvolution = ev.previousEvolution?.toUInt(),
@@ -119,7 +118,8 @@ object Network {
                             needsRain = details.needsRain
                         )
                     }
-                } ?: listOf(),
+                    else null
+                } ?: listOf() ,
                 forms = pokemon.species?.pokeForms?.let { forms ->
                     forms.map { form ->
                         PokemonForm(
