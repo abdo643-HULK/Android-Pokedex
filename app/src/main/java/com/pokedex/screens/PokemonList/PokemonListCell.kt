@@ -38,7 +38,7 @@ private const val darkShadowRadius = 5.5f
 
 @Composable
 fun PokemonListCell(
-    pokemon: Pokemon = Pokemon(1u, "Balbasur"),
+    pokemon: Pokemon,
     size: Dp,
     onPokemonSelect: (id: UInt) -> Unit,
     modifier: Modifier = Modifier,
@@ -50,7 +50,7 @@ fun PokemonListCell(
         size = size,
         shadow = cellState.shadow,
         modifier = Modifier.clickable {
-            Log.i("POKEMON", "${pokemon.id}")
+            onPokemonSelect(pokemon.id)
         }
     ) {
         Column(
@@ -75,7 +75,6 @@ fun IDLabel(id: UInt, modifier: Modifier = Modifier) {
             fontSize = 20.sp
         ),
     )
-
 }
 
 

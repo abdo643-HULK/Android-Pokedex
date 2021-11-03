@@ -1,10 +1,8 @@
 package com.pokedex.models
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
-
-enum class PokeType(val type: String) {
+enum class PokemonType(val type: String) {
     Normal("normal"),
     Fire("fire"),
     Water("water"),
@@ -54,7 +52,7 @@ enum class PokeType(val type: String) {
         }
 
     companion object {
-        fun from(rawValue: String): PokeType = values().first { it.type == rawValue }
+        fun from(rawValue: String): PokemonType = values().first { it.type == rawValue }
     }
 }
 

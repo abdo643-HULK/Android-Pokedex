@@ -32,7 +32,6 @@ fun MainScreen(content: @Composable() () -> Unit) {
 //        content()
             Navigation(appState.navController, maxWidth = constraints.maxWidth)
         }
-
     }
 }
 

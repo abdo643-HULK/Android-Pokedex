@@ -1,10 +1,12 @@
 @file:OptIn(ExperimentalAnimationApi::class)
+
 package com.pokedex.components
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -32,13 +34,6 @@ fun Navigation(
             navController,
             maxWidth / 2
         )
-//        composable(NavigationItem.PokemonList.route) {
-//            val viewModel = PokemonListViewModel(navController)
-//            PokemonListScreen(viewModel)
-//        }
-//        composable(NavigationItem.Profile.route) {
-//            ProfileScreen(navController = navController)
-//        }
     }
 }
 
@@ -50,7 +45,7 @@ fun NavGraphBuilder.addPokemonListScreen(
         BottomNavigationItem.PokemonList.route,
         exitTransition = { _, _ ->
             slideOutHorizontally(
-                targetOffsetX = { -width },
+                targetOffsetX = { -(width / 2) },
                 animationSpec = tween(
                     durationMillis = 300,
                     easing = FastOutSlowInEasing
@@ -59,7 +54,7 @@ fun NavGraphBuilder.addPokemonListScreen(
         },
         popEnterTransition = { initial, _ ->
             slideInHorizontally(
-                initialOffsetX = { -width },
+                initialOffsetX = { -(width / 2) },
                 animationSpec = tween(
                     durationMillis = 300,
                     easing = FastOutSlowInEasing
@@ -86,7 +81,7 @@ fun NavGraphBuilder.addPokemonDetailsScreen(
         arguments = NavigationItem.PokemonDetails.arguments,
         enterTransition = { _, _ ->
             slideInHorizontally(
-                initialOffsetX = { width },
+                initialOffsetX = { width / 2 },
                 animationSpec = tween(
                     durationMillis = 300,
                     easing = FastOutSlowInEasing
@@ -95,15 +90,15 @@ fun NavGraphBuilder.addPokemonDetailsScreen(
         },
         popExitTransition = { _, target ->
             slideOutHorizontally(
-                targetOffsetX = { width },
+                targetOffsetX = { width / 2 },
                 animationSpec = tween(
                     durationMillis = 300,
                     easing = FastOutSlowInEasing
                 )
             ) + fadeOut(animationSpec = tween(300))
         }
-    ){
-        val viewModel: PokemonDetailsViewModel = PokemonDetailsViewModel()
-        PokemonDetailsScreen()
+    ) {
+        val vm: PokemonDetailsViewModel = viewModel()
+        PokemonDetailsScreen(vm)
     }
 }
