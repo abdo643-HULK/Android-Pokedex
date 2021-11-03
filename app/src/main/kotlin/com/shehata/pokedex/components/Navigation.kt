@@ -2,6 +2,7 @@
 
 package com.shehata.pokedex.components
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -45,15 +46,6 @@ fun NavGraphBuilder.addPokemonListScreen(
 ) {
     composable(
         BottomNavigationItem.PokemonList.route,
-        exitTransition = { _, _ ->
-            slideOutHorizontally(
-                targetOffsetX = { -(width / 2) },
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutSlowInEasing
-                )
-            ) + fadeOut(animationSpec = tween(300))
-        },
         enterTransition = { initial, _ ->
             when (initial.destination.route) {
                 NavigationItem.PokemonDetails.route ->
@@ -72,6 +64,20 @@ fun NavGraphBuilder.addPokemonListScreen(
                     easing = FastOutSlowInEasing
                 )
             ) + fadeIn(animationSpec = tween(300))
+        },
+        exitTransition = { _, target ->
+            when (target.destination.route?.contains(NavigationItem.PokemonDetails.route)) {
+                 true -> {
+                     slideOutHorizontally(
+                         targetOffsetX = { -(width / 2) },
+                         animationSpec = tween(
+                             durationMillis = 300,
+                             easing = FastOutSlowInEasing
+                         )
+                     ) + fadeOut(animationSpec = tween(300))
+                }
+                else -> null
+            }
         },
     ) {
         val viewModel = PokemonListViewModel(navController)

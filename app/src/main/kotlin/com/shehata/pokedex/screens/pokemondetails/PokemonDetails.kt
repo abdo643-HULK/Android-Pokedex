@@ -2,16 +2,21 @@ package com.shehata.pokedex.screens.pokemondetails
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -29,13 +34,12 @@ import com.shehata.pokedex.models.PokemonDetails
 fun PokemonDetailsScreen(
     state: PokemonDetailsState
 ) {
-
-    state?.pokemon?.let {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            item {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        item {
+            state.pokemon?.let {
                 PokemonBox(
                     pokemon = it
                 )
@@ -57,18 +61,19 @@ fun PokemonBox(
             placeholder(R.drawable.ic_pokeball_colored)
         }
     )
-    val boxSize = 400.dp
+    val boxSize = 450.dp
 
     Column(
         modifier
             .fillMaxWidth()
-            .height(boxSize),
+            .height(boxSize)
+            .padding(20.dp),
         verticalArrangement = Arrangement.Center,
     ) {
         NameLabel(name = pokemon.name)
         PokemonImage(
             painter = painter,
-            size = boxSize - 55.dp,
+            size = boxSize - 150.dp,
             pokemonName = pokemon.name
         )
         TypesRow(
@@ -82,15 +87,14 @@ fun NameLabel(
     name: String,
     modifier: Modifier = Modifier
 ) {
-    BasicText(
+    Text(
         text = name.replaceFirstChar(Char::titlecase),
         maxLines = 1,
-        style = TextStyle(
-            color = MaterialTheme.colors.primary,
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-        ),
+        color = MaterialTheme.colors.primary,
+        fontWeight = FontWeight.Bold,
+        fontSize = 30.sp,
+        textAlign = TextAlign.Center,
+        modifier = modifier.fillMaxWidth()
     )
 }
 
@@ -115,27 +119,38 @@ fun TypesRow(
     types: List<PokemonType>,
     modifier: Modifier = Modifier
 ) {
+    val roundedCornerRadius = RoundedCornerShape(20)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
             .height(40.dp)
+            .clip(roundedCornerRadius)
             .fillMaxWidth()
     ) {
         for (type in types) {
-            Log.i("POKEMON", type.name)
-            Log.i("POKEMON", type.color.toString())
-            BasicText(
-                text = type.name,
-                maxLines = 1,
-                style = TextStyle(
-                    color = MaterialTheme.colors.primary,
-                    background = type.color ?: MaterialTheme.colors.background,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                ),
-            )
+            val backgroundColor = type.color ?: MaterialTheme.colors.background
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = modifier
+                    .clipToBounds()
+                    .weight(1f)
+                    .fillMaxSize()
+                    .background(backgroundColor)
+            ) {
+                BasicText(
+                    text = type.name,
+                    maxLines = 1,
+                    style = TextStyle(
+                        color = MaterialTheme.colors.primary,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                )
+            }
         }
     }
 }
