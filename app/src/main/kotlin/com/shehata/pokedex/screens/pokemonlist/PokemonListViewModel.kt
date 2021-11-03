@@ -12,10 +12,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.pokedex.NavigationItem
-import com.pokedex.models.Pokemon
-import com.pokedex.models.PokemonGens
-import com.pokedex.network.Network
+import com.shehata.pokedex.NavigationItem
+import com.shehata.pokedex.models.Pokemon
+import com.shehata.pokedex.models.PokemonGens
+import com.shehata.pokedex.network.Network
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 

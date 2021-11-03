@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import com.pokedex.R
+import com.shehata.pokedex.R
 
 @Composable
 fun GoogleButton() {

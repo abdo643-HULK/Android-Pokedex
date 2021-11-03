@@ -1,7 +1,6 @@
-package com.pokedex.ui.theme
+package com.shehata.pokedex.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import com.pokedex.R
 
 val Purple200 = Color(0xFFBB86FC)
 val Purple500 = Color(0xFF6200EE)

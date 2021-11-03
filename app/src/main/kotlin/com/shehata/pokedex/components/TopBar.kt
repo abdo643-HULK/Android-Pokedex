@@ -9,7 +9,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.pokedex.R
+import com.shehata.pokedex.R
 
 @Composable
 fun TopBar() {

@@ -9,9 +9,9 @@ import com.apollographql.apollo.api.Operation
 import com.apollographql.apollo.api.Query
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
-import com.pokedex.GenerationQuery
-import com.pokedex.PokemonDetailsQuery
-import com.pokedex.models.*
+import com.shehata.pokedex.GenerationQuery
+import com.shehata.pokedex.PokemonDetailsQuery
+import com.shehata.pokedex.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.URL

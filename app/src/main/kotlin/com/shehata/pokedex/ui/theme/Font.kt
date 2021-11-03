@@ -1,9 +1,9 @@
-package com.pokedex.ui.theme
+package com.shehata.pokedex.ui.theme
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.pokedex.R
+import com.shehata.pokedex.R
 
 val firaSansFamily = FontFamily(
 //    Font(R.font.firasans_light, FontWeight.Light),

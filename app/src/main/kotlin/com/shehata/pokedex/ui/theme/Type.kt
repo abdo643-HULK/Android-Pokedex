@@ -1,4 +1,4 @@
-package com.pokedex.ui.theme
+package com.shehata.pokedex.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

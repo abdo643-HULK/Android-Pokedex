@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.pokedex.components.BottomNavBar
-import com.pokedex.components.Navigation
-import com.pokedex.components.TopBar
+import com.shehata.pokedex.components.BottomNavBar
+import com.shehata.pokedex.components.Navigation
+import com.shehata.pokedex.components.TopBar
 
 @ExperimentalAnimationApi
 @Composable

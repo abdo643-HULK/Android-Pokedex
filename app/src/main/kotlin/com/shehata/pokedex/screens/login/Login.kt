@@ -27,10 +27,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.AuthCredential
-import com.pokedex.R
-import com.pokedex.components.GoogleButton
-import com.pokedex.components.OutlinedEmailTextField
-import com.pokedex.components.OutlinedPasswordTextField
+import com.shehata.pokedex.R
+import com.shehata.pokedex.components.GoogleButton
+import com.shehata.pokedex.components.OutlinedEmailTextField
+import com.shehata.pokedex.components.OutlinedPasswordTextField
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {

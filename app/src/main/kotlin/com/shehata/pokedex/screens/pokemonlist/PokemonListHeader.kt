@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pokedex.extensions.drawColoredShadow
+import com.shehata.pokedex.extensions.drawColoredShadow
 
 private const val cornerRadius = 10
 private const val lightShadowRadius = 6.25f

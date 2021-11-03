@@ -22,10 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.pokedex.PreviewWithMainScreen
-import com.pokedex.components.ScrollToTopButton
-import com.pokedex.models.Pokemon
-import com.pokedex.models.PokemonGens
+import com.shehata.pokedex.PreviewWithMainScreen
+import com.shehata.pokedex.components.ScrollToTopButton
+import com.shehata.pokedex.models.Pokemon
+import com.shehata.pokedex.models.PokemonGens
 import kotlinx.coroutines.launch
 
 

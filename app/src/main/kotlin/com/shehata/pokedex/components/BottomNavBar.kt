@@ -11,9 +11,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.pokedex.BottomNavigationItem
-import com.pokedex.NavigationItem
-import com.pokedex.R
+import com.shehata.pokedex.BottomNavigationItem
+import com.shehata.pokedex.NavigationItem
+import com.shehata.pokedex.R
 
 @Composable
 fun BottomNavBar(navController: NavController) {

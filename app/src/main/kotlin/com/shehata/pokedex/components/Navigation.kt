@@ -14,12 +14,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.pokedex.BottomNavigationItem
-import com.pokedex.NavigationItem
-import com.pokedex.screens.pokemondetails.PokemonDetailsScreen
-import com.pokedex.screens.pokemondetails.PokemonDetailsViewModel
-import com.pokedex.screens.pokemonlist.PokemonListScreen
-import com.pokedex.screens.pokemonlist.PokemonListViewModel
+import com.shehata.pokedex.BottomNavigationItem
+import com.shehata.pokedex.NavigationItem
+import com.shehata.pokedex.screens.pokemondetails.PokemonDetailsScreen
+import com.shehata.pokedex.screens.pokemondetails.PokemonDetailsViewModel
+import com.shehata.pokedex.screens.pokemonlist.PokemonListScreen
+import com.shehata.pokedex.screens.pokemonlist.PokemonListViewModel
 
 @Composable
 fun Navigation(

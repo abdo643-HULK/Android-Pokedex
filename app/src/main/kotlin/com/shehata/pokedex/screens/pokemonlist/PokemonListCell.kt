@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
-import com.pokedex.R
-import com.pokedex.extensions.drawColoredShadow
-import com.pokedex.models.Pokemon
+import com.shehata.pokedex.R
+import com.shehata.pokedex.extensions.drawColoredShadow
+import com.shehata.pokedex.models.Pokemon
 import java.net.URL
 
 private const val cornerRadius = 12

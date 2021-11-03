@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
-import com.pokedex.R
-import com.pokedex.models.PokemonType
-import com.pokedex.models.PokemonDetails
+import com.shehata.pokedex.R
+import com.shehata.pokedex.models.PokemonType
+import com.shehata.pokedex.models.PokemonDetails
 
 @Composable
 fun PokemonDetailsScreen(
