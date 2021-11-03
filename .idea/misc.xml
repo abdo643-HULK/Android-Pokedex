@@ -14,13 +14,15 @@
         <entry key="../../../../../../layout/compose-model-1635410311450.xml" value="0.25833333333333336" />
         <entry key="../../../../../../layout/compose-model-1635542449350.xml" value="0.19290045168562586" />
         <entry key="../../../../../../layout/compose-model-1635771267832.xml" value="0.1" />
+        <entry key="../../../../../../layout/compose-model-1635941351336.xml" value="0.26309121621621623" />
+        <entry key="../../../../../../layout/compose-model-1635941374379.xml" value="0.26309121621621623" />
         <entry key="..\:/Code/FH/SUA/Project/app/src/main/res/drawable/ic_launcher_background.xml" value="0.37864583333333335" />
         <entry key="app/src/main/res/drawable/ic_outline_person_24.xml" value="0.2611111111111111" />
         <entry key="app/src/main/res/drawable/ic_pokeball.xml" value="0.2611111111111111" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_14_PREVIEW" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

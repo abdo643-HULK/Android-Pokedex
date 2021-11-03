@@ -9,7 +9,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.pokedex"
+        applicationId "com.shehata.pokedex"
         minSdk 26
         targetSdk 29
         versionCode 1
