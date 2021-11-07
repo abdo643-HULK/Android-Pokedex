@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
+
 package com.shehata.pokedex.screens.pokemonlist
 
 import android.content.res.Configuration
@@ -7,85 +9,89 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.shehata.pokedex.PreviewWithMainScreen
 import com.shehata.pokedex.components.ScrollToTopButton
 import com.shehata.pokedex.models.Pokemon
 import com.shehata.pokedex.models.PokemonGens
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
+//@Composable
+//fun PokemonListRoute(
+//    viewModel: PokemonListViewModel,
+//) {
+//    val uiState by viewModel.uiState.observeAsState(PokemonListState())
+//    val pokemonsList = uiState.pokemons
+//    val isFetching = uiState.isFetching
+//}
+
 @Composable
 fun PokemonListScreen(
-    viewModel: PokemonListViewModel,
+    state: PokemonListState,
+    fetchPokemon: () -> Unit,
     navigateToDetailScreen: (pokemonId: UInt) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val orientation = LocalConfiguration.current.orientation
     val pokemonsCellsPerRow = if (orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 3
-    val isFetching = viewModel.isFetching
-    val pokemonsList by viewModel.pokemons.observeAsState(mutableMapOf())
+    val isFetching = state.isFetching
 
-    PokemonList(
-        pokemons = pokemonsList,
-        cellsPerRow = pokemonsCellsPerRow,
-        isFetchingNextGen = isFetching,
-        modifier = modifier,
-        navigateToDetailScreen = navigateToDetailScreen,
-        onPagination = {
-            viewModel.fetchPokemon()
-        }
-    )
-}
-
-@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
-@Composable
-fun PokemonList(
-    pokemons: Map<String, List<Pokemon>>,
-    cellsPerRow: Int,
-    isFetchingNextGen: Boolean,
-    modifier: Modifier = Modifier,
-    navigateToDetailScreen: (id: UInt) -> Unit,
-    onPagination: () -> Unit
-) {
-    val screenWidth = LocalConfiguration.current.screenWidthDp
-    val cellSize = Dp((screenWidth / cellsPerRow - 30).toFloat())
-
-    val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val finished = remember(isFetchingNextGen) {
-        derivedStateOf {
-            !isFetchingNextGen
-        }
-    }
-
     val listSize = listState.layoutInfo.totalItemsCount
     val lastVisibleItemIndex = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
 
+    val fetchMore by remember(listSize, lastVisibleItemIndex) {
+        derivedStateOf {
+            lastVisibleItemIndex / listSize.toFloat() > 0.9f
+        }
+    }
 
+    LaunchedEffect(fetchMore) {
+        if (!isFetching && listSize != 0 && fetchMore) {
+            fetchPokemon()
+        }
+    }
+
+    PokemonList(
+        pokemons = state.pokemons,
+        listState = listState,
+        cellsPerRow = pokemonsCellsPerRow,
+        modifier = modifier,
+        navigateToDetailScreen = navigateToDetailScreen,
+    )
+}
+
+@Composable
+fun PokemonList(
+    pokemons: Map<String, List<Pokemon>>,
+    listState: LazyListState,
+    cellsPerRow: Int,
+    modifier: Modifier = Modifier,
+    navigateToDetailScreen: (id: UInt) -> Unit,
+) {
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val cellSize = Dp((screenWidth / cellsPerRow - 30).toFloat())
+    val coroutineScope = rememberCoroutineScope()
 
     Box(modifier.fillMaxSize()) {
         LazyColumn(
             state = listState,
-            modifier = modifier
-                .fillMaxSize()
-                .padding(20.dp),
+            modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(15.dp),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp)
         ) {
             pokemons.values.forEachIndexed { sectionIndex, pokemons ->
                 val currentGen = sectionIndex + 1
@@ -94,7 +100,12 @@ fun PokemonList(
                     PokemonListHeader(currentGen)
                 }
 
-                items(pokemons.chunked(cellsPerRow)) { pokemonRow ->
+                items(
+                    pokemons.chunked(cellsPerRow),
+                    key = {
+                        it[0].id.toInt()
+                    }
+                ) { pokemonRow ->
                     PokemonListRow(
                         pokemonRow,
                         cellSize,
@@ -104,14 +115,14 @@ fun PokemonList(
             }
         }
 
-
-
-        if (finished.value && listSize != 0 && lastVisibleItemIndex / listSize.toFloat() > 0.9f) {
-            onPagination()
+        val showButton by remember {
+            derivedStateOf {
+                listState.firstVisibleItemIndex > 0
+            }
         }
 
         AnimatedVisibility(
-            visible = listState.firstVisibleItemIndex > 0,
+            visible = showButton,
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
@@ -147,13 +158,3 @@ fun PokemonListRow(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PokemonListScreenPreview() {
-//    PreviewWithMainScreen {
-//        PokemonListScreen(
-//            rememberNavController()
-//        )
-//    }
-//}
