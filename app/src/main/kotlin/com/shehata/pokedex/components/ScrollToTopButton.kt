@@ -19,7 +19,7 @@ fun ScrollToTopButton(onClick: () -> Unit) {
             .fillMaxSize()
     ) {
         FloatingActionButton(
-            modifier = Modifier.align(Alignment.BottomEnd).padding(12.dp),
+            modifier = Modifier.align(Alignment.BottomEnd).padding(8.dp),
             onClick = onClick
         ) {
             Icon(imageVector = Icons.Rounded.KeyboardArrowUp, contentDescription = "Scroll to top")
