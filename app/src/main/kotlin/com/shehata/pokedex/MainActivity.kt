@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
 
             PokedexTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    MainScreen { }
+                    MainScreen()
                 }
             }
         }
