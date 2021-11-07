@@ -3,6 +3,7 @@ package com.shehata.pokedex.screens.login
 import android.text.Layout
 import android.util.Log
 import android.content.res.Resources
+import android.util.Patterns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,8 +35,52 @@ import com.shehata.pokedex.components.GoogleButton
 import com.shehata.pokedex.components.OutlinedEmailTextField
 import com.shehata.pokedex.components.OutlinedPasswordTextField
 
+@Stable
+interface EmailInputFieldState {
+    var email: String
+    val isValid: Boolean
+}
+
+class EmailInputFieldStateImpl(
+    email: String = "",
+) : EmailInputFieldState {
+    private var _email by mutableStateOf(email)
+    override var email: String
+        get() = _email
+        set(value) {
+            _email = value
+        }
+
+    override val isValid by derivedStateOf { isValidEmail(_email) }
+
+    private fun isValidEmail(email: String): Boolean =
+        email.isEmpty() || Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+    companion object {
+        val Saver = Saver<EmailInputFieldStateImpl, List<Any>>(
+            save = { listOf(it._email) },
+            restore = {
+                EmailInputFieldStateImpl(
+                    email = it[0] as String,
+                )
+            }
+        )
+    }
+}
+
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun rememberEmailInputFieldState(): EmailInputFieldState = rememberSaveable(
+    saver = EmailInputFieldStateImpl.Saver
+) {
+    EmailInputFieldStateImpl("")
+}
+
+
+@Composable
+fun LoginScreen(
+    viewModel: LoginViewModel,
+    state: EmailInputFieldState = rememberEmailInputFieldState()
+) {
     var userEmail by remember { mutableStateOf("") }
     var userPassword by remember { mutableStateOf("") }
 
