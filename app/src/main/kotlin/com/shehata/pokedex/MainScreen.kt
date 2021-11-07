@@ -10,6 +10,8 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -20,7 +22,7 @@ import com.shehata.pokedex.components.TopBar
 
 @ExperimentalAnimationApi
 @Composable
-fun MainScreen(content: @Composable() () -> Unit) {
+fun MainScreen() {
     val appState = rememberMyAppState()
     Scaffold(
         scaffoldState = appState.scaffoldState,
@@ -29,17 +31,8 @@ fun MainScreen(content: @Composable() () -> Unit) {
     ) { innerPadding ->
         // Apply the padding globally to the whole BottomNavScreensController
         BoxWithConstraints(modifier = Modifier.padding(innerPadding)) {
-//        content()
             Navigation(appState.navController, maxWidth = constraints.maxWidth)
         }
-    }
-}
-
-@ExperimentalAnimationApi
-@Composable
-fun PreviewWithMainScreen(content: @Composable() () -> Unit) {
-    MainScreen {
-        content()
     }
 }
 
@@ -47,7 +40,21 @@ class AppState(
     val scaffoldState: ScaffoldState,
     val navController: NavHostController,
     private val resources: Resources,
-)
+) {
+    // for remeberSaveable
+    companion object {
+        val Saver: Saver<AppState, *> = listSaver(
+            save = { listOf(it.resources, it.scaffoldState, it.navController) },
+            restore = {
+                AppState(
+                    resources = it[0] as Resources,
+                    scaffoldState = it[1] as ScaffoldState,
+                    navController = it[2] as NavHostController
+                )
+            }
+        )
+    }
+}
 
 @ExperimentalAnimationApi
 @Composable
