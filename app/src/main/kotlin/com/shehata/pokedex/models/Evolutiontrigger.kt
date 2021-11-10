@@ -9,6 +9,6 @@ enum class Evolutiontrigger(val value: String) {
     UNKNOWN("unknown");
 
     companion object {
-        fun from(rawValue: String): Evolutiontrigger = Evolutiontrigger.values().first { it.value == rawValue }
+        fun from(rawValue: String): Evolutiontrigger = values().first { it.value == rawValue }
     }
 }

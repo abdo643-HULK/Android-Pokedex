@@ -2,9 +2,12 @@
 
 package com.shehata.pokedex.models
 
+import java.net.URL
+
 data class Evolution(
         val name: String,
-        val previousEvolution: UInt?,
+        val imageURL: URL,
+        val previousEvolutionId: UInt?,
         val trigger: Evolutiontrigger?,
         val minLvl: UInt?,
         val neededItem: String?,

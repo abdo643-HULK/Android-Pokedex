@@ -31,7 +31,7 @@ object Network {
         return response?.data
     }
 
-    suspend fun <T: String>getPokemonByGeneration(gen: T): List<Pokemon> {
+    suspend fun <T : String> getPokemonByGeneration(gen: T): List<Pokemon> {
         val generationList = runQuery(GenerationQuery(Input.fromNullable(gen)))?.pokemon
 
         return generationList?.map {
@@ -105,7 +105,8 @@ object Network {
                         val details = ev.evolutionDetails[0]
                         Evolution(
                             name = ev.name,
-                            previousEvolution = ev.previousEvolution?.toUInt(),
+                            previousEvolutionId = ev.previousEvolution?.toUInt(),
+                            imageURL = URL("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${ev.previousEvolution}.png"),
                             trigger = Evolutiontrigger.from(
                                 details.trigger?.name ?: "unknown"
                             ),
@@ -117,9 +118,8 @@ object Network {
                             neededAffection = details.neededAffection?.toUInt(),
                             needsRain = details.needsRain
                         )
-                    }
-                    else null
-                } ?: listOf() ,
+                    } else null
+                } ?: listOf(),
                 forms = pokemon.species?.pokeForms?.let { forms ->
                     forms.map { form ->
                         PokemonForm(

@@ -4,14 +4,12 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.*
@@ -34,10 +32,81 @@ import androidx.compose.ui.unit.sp
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.shehata.pokedex.R
+import com.shehata.pokedex.extensions.drawColoredShadow
 import com.shehata.pokedex.models.*
-import com.shehata.pokedex.network.Network
 import kotlinx.coroutines.launch
 import java.net.URL
+
+
+@Composable
+fun PokemonDetailsScreen(
+    state: PokemonDetailsState,
+    actions: (PokemonDetailsActions) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        state.pokemon?.let { pokemon ->
+            PokemonDetail(state = state, pokemon = pokemon, actions = actions)
+        }
+    }
+}
+
+@Composable
+private fun PokemonDetail(
+    state: PokemonDetailsState,
+    pokemon: PokemonDetails,
+    actions: (PokemonDetailsActions) -> Unit
+) {
+    val stats by remember(state.selectedStatType) {
+        derivedStateOf {
+            when (state.selectedStatType) {
+                StatTypes.Base -> pokemon.baseStats
+                StatTypes.Min -> pokemon.minStats
+                StatTypes.Max -> pokemon.maxStats
+            }
+        }
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        item {
+            val painter = rememberImagePainter(
+                data = "${pokemon.imageURL}",
+                builder = {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_pokeball_colored)
+                }
+            )
+
+            PokemonBox(
+                pokemon = pokemon,
+                painter = painter
+            )
+        }
+
+        item {
+            if(pokemon.evolutions.isNotEmpty()) {
+                EvolutionTree(pokemon.evolutions)
+            }
+        }
+
+        item {
+            StatsBox(
+                stats = stats,
+                color = pokemon.types[0].color ?: MaterialTheme.colors.background,
+                selected = state.selectedStatType,
+                onStatChange = { statType ->
+                    actions(PokemonDetailsActions.ChangeStat(statType))
+                }
+            )
+        }
+    }
+
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -57,154 +126,6 @@ fun PokemonDetailsScreenPreview() {
     }
 }
 
-@Composable
-fun PokemonDetailsScreen(
-    state: PokemonDetailsState,
-    navigateUp: () -> Unit
-) {
-//    Column {
-//        IconButton(
-//            onClick = navigateUp
-//        ) {
-//            Icon(
-//                imageVector = Icons.Rounded.ArrowBack,
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .height(30.dp)
-//            )
-//        }
-//    }
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        item {
-            state.pokemon?.let {
-                val painter = rememberImagePainter(
-                    data = "${it.imageURL}",
-                    builder = {
-                        crossfade(true)
-                        placeholder(R.drawable.ic_pokeball_colored)
-                    }
-                )
-
-                PokemonBox(
-                    pokemon = it,
-                    painter = painter
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun PokemonBox(
-    pokemon: PokemonDetails,
-    painter: Painter,
-    modifier: Modifier = Modifier
-) {
-
-    val boxSize = 450.dp
-    Column(
-        modifier
-            .fillMaxWidth()
-            .height(boxSize)
-            .padding(start = 20.dp, end = 20.dp),
-        verticalArrangement = Arrangement.Center,
-    ) {
-        NameLabel(
-            name = pokemon.name,
-//            modifier = Modifier
-//                .weight(1f)
-        )
-        PokemonImage(
-            painter = painter,
-            pokemonName = pokemon.name,
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxSize()
-                .padding(10.dp)
-        )
-        TypesRow(
-            types = pokemon.types,
-            modifier = Modifier.weight(2f)
-        )
-    }
-}
-
-@Composable
-fun NameLabel(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = name.replaceFirstChar(Char::titlecase),
-        maxLines = 1,
-        color = MaterialTheme.colors.primary,
-        fontWeight = FontWeight.Bold,
-        fontSize = 30.sp,
-        textAlign = TextAlign.Center,
-        modifier = modifier
-            .fillMaxWidth()
-//            .height(40.dp)
-    )
-}
-
-@Composable
-fun PokemonImage(
-    painter: Painter,
-    pokemonName: String,
-    modifier: Modifier = Modifier
-) {
-    Image(
-        painter = painter,
-        contentDescription = "Official Artwork of $pokemonName ",
-        modifier = modifier.fillMaxSize()
-    )
-}
-
-@Composable
-fun TypesRow(
-    types: List<PokemonType>,
-    modifier: Modifier = Modifier
-) {
-    val roundedCornerRadius = RoundedCornerShape(20)
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .height(40.dp)
-            .clip(roundedCornerRadius)
-            .fillMaxWidth()
-    ) {
-        for (type in types) {
-            val backgroundColor = type.color ?: MaterialTheme.colors.background
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = modifier
-                    .clipToBounds()
-                    .weight(1f)
-                    .fillMaxSize()
-                    .background(backgroundColor)
-            ) {
-                BasicText(
-                    text = type.name,
-                    maxLines = 1,
-                    style = TextStyle(
-                        color = MaterialTheme.colors.primary,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                    )
-                )
-            }
-        }
-    }
-}
-
 private val dummyPokemon = PokemonDetails(
     id = 1u,
     name = "Balbasur",
@@ -213,7 +134,7 @@ private val dummyPokemon = PokemonDetails(
     ),
     height = 0f,
     weight = 0f,
-    types = arrayOf("fire").map { PokemonType.from(it) },
+    types = arrayOf("grass", "poison").map { PokemonType.from(it) },
     abilities = listOf(Ability(slot = 1u, name = "Mango")),
     baseStats =
     Stats(

@@ -24,6 +24,7 @@ import com.shehata.pokedex.NavigationItem
 import com.shehata.pokedex.screens.pokemondetails.PokemonDetailsScreen
 import com.shehata.pokedex.screens.pokemondetails.PokemonDetailsState
 import com.shehata.pokedex.screens.pokemondetails.PokemonDetailsViewModel
+import com.shehata.pokedex.screens.pokemondetails.StatTypes
 import com.shehata.pokedex.screens.pokemonlist.PokemonListScreen
 import com.shehata.pokedex.screens.pokemonlist.PokemonListState
 import com.shehata.pokedex.screens.pokemonlist.PokemonListViewModel
@@ -88,7 +89,6 @@ fun NavGraphBuilder.addPokemonListScreen(
                 }
                 else -> null
             }
-
         },
         exitTransition = {
             when (targetState.destination.route?.contains(NavigationItem.PokemonDetails.route)) {
@@ -160,13 +160,12 @@ fun NavGraphBuilder.addPokemonDetailsScreen(
         }
     ) {
         val vm: PokemonDetailsViewModel = viewModel()
-        val state by vm.uiState.observeAsState(PokemonDetailsState(null))
+
+        val state by vm.uiState.observeAsState(PokemonDetailsState())
 
         PokemonDetailsScreen(
-            state,
-            navigateUp = {
-                navController.navigateUp()
-            }
+            state = state,
+            actions = vm::actionsHandler
         )
     }
 }
