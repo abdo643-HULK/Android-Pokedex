@@ -3,6 +3,8 @@ package com.shehata.pokedex.screens.pokemondetails
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.compose.runtime.setValue
+import coil.compose.ImagePainter
+import coil.request.ImageRequest
 import com.shehata.pokedex.models.PokemonDetails
 import com.shehata.pokedex.network.Network
 import kotlinx.coroutines.Dispatchers
@@ -42,8 +44,6 @@ class PokemonDetailsViewModel(
             _uiState.value?.let {
                 _uiState.value = it.copy(pokemon = pokemon)
             }
-//            _uiState.value?.pokemon = pokemon
-//            _uiState.value =  _uiState.value
         }
     }
 }
@@ -54,6 +54,8 @@ class PokemonDetailsViewModel(
 data class PokemonDetailsState(
 //    var pokemon: PokemonDetails? = null,
     val pokemon: PokemonDetails? = null,
+//    val pokemonImagePainter: ImagePainter = ImageRequest(),
+//    val evolutionsImagePainters: List<ImagePainter> = listOf(),
     var selectedStatType: StatTypes = StatTypes.Base
 )
 

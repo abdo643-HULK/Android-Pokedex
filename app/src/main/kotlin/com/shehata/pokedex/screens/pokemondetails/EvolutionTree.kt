@@ -7,54 +7,75 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.shehata.pokedex.R
 import com.shehata.pokedex.models.Evolution
 
 @Composable
-fun EvolutionTree(evolutions: List<Evolution?>) {
-
+fun EvolutionTree(
+    evolutions: List<Evolution>,
+    painters: List<ImagePainter>
+) {
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
+        val evolutionMatrix = getEvolutionMatrix(evolutions)
+
         Row(
-            Modifier.height(100.dp).fillMaxWidth()
+            Modifier.fillMaxWidth()
         ) {
-            evolutions.forEach { ev ->
-                ev?.let { evolution ->
-                    val (
-                        name,
-                        imageURL,
-                        previousEvolutionId,
-                        trigger,
-                        minLvl,
-                        neededItem,
-                        neededTime,
-                        neededLocation,
-                        neededHappiness,
-                        neededAffection,
-                        needsRain
-                    ) = evolution
+            evolutionMatrix.forEachIndexed { i, evolution ->
+                val painter = painters[i]
+                if (evolution.size > 1) {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        evolution.forEach {
+                            Image(
+                                painter = painter,
+                                contentDescription = "Image of ${it.name}",
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(100.dp)
+                            )
 
-                    val painter = rememberImagePainter(
-                        data = "${imageURL}",
-                        builder = {
-                            crossfade(true)
-                            placeholder(R.drawable.ic_pokeball_colored)
                         }
-                    )
-
+                    }
+                } else {
                     Image(
                         painter = painter,
-                        contentDescription = null,
-                        modifier = Modifier.weight(1f)
+                        contentDescription = "Image of ${evolution[0].name}",
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(100.dp)
                     )
-//                    Text(
-//                        text = "$name ,$previousEvolutionId , ${minLvl}"
-//                    )
                 }
+
             }
         }
     }
 }
 
+private fun getEvolutionMatrix(evolutionList: List<Evolution>): List<List<Evolution>> {
+    var list: MutableList<MutableList<Evolution>> = mutableListOf(mutableListOf())
+    var j = 0
+
+    list[j++] = mutableListOf(evolutionList[0])
+
+
+    for (i in 1 until evolutionList.size) {
+        list.add(mutableListOf())
+        if (evolutionList[i].previousEvolutionId == evolutionList[i - 1].previousEvolutionId) {
+            list[j].add(evolutionList[i])
+        } else {
+            list[i].add(evolutionList[i])
+            ++j
+        }
+    }
+
+    Log.i("POKEMON", "${list}")
+
+    return list
+}

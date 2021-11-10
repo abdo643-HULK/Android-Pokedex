@@ -101,12 +101,17 @@ object Network {
                     GenderRates(it)
                 },
                 evolutions = pokemon.species?.evolutions?.info?.map { ev ->
-                    if (ev.evolutionDetails.isNotEmpty()) {
+                    if (ev.evolutionDetails.isEmpty()) {
+                        Evolution(
+                            name = ev.name,
+                            imageURL = URL("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${ev.id}.png"),
+                        )
+                    } else {
                         val details = ev.evolutionDetails[0]
                         Evolution(
                             name = ev.name,
                             previousEvolutionId = ev.previousEvolution?.toUInt(),
-                            imageURL = URL("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${ev.previousEvolution}.png"),
+                            imageURL = URL("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${ev.id}.png"),
                             trigger = Evolutiontrigger.from(
                                 details.trigger?.name ?: "unknown"
                             ),
@@ -118,7 +123,7 @@ object Network {
                             neededAffection = details.neededAffection?.toUInt(),
                             needsRain = details.needsRain
                         )
-                    } else null
+                    }
                 } ?: listOf(),
                 forms = pokemon.species?.pokeForms?.let { forms ->
                     forms.map { form ->

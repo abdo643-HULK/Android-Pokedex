@@ -89,9 +89,20 @@ private fun PokemonDetail(
         }
 
         item {
-            if(pokemon.evolutions.isNotEmpty()) {
-                EvolutionTree(pokemon.evolutions)
+            val evolutionsPainters = pokemon.evolutions.map {
+                rememberImagePainter(
+                    data = "${it.imageURL}",
+                    builder = {
+                        crossfade(true)
+                        placeholder(R.drawable.ic_pokeball_colored)
+                    }
+                )
             }
+
+            EvolutionTree(
+                pokemon.evolutions,
+                painters = evolutionsPainters
+            )
         }
 
         item {

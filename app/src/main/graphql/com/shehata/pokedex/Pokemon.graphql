@@ -34,9 +34,7 @@ query pokemonDetails($id: Int!) {
                 name
             }
         }
-        abilities: pokemon_v2_pokemonabilities(
-            order_by: [{ slot: asc_nulls_first }]
-        ) {
+        abilities: pokemon_v2_pokemonabilities(order_by: [{slot: asc_nulls_first}]) {
             slot
             ability: pokemon_v2_ability {
                 name
@@ -59,14 +57,11 @@ query pokemonDetails($id: Int!) {
             genderRate: gender_rate
             hasGenderDiff: has_gender_differences
             evolutions: pokemon_v2_evolutionchain {
-                info: pokemon_v2_pokemonspecies(
-                    order_by: [{ order: asc_nulls_first }]
-                ) {
+                info: pokemon_v2_pokemonspecies(order_by: [{order: asc_nulls_first}]) {
+                    id
                     name
                     previousEvolution: evolves_from_species_id
-                    evolutionDetails: pokemon_v2_pokemonevolutions(
-                        distinct_on: [id]
-                    ) {
+                    evolutionDetails: pokemon_v2_pokemonevolutions(distinct_on: [id]) {
                         trigger: pokemon_v2_evolutiontrigger {
                             name
                         }
@@ -87,18 +82,12 @@ query pokemonDetails($id: Int!) {
                     }
                 }
             }
-            pokeForms: pokemon_v2_pokemons(
-                distinct_on: [id]
-                where: { id: { _neq: $id } }
-            ) {
+            pokeForms: pokemon_v2_pokemons(distinct_on: [id], where: {id: {_neq: $id}}) {
                 id
                 name
                 height
                 weight
-                formDetails: pokemon_v2_pokemonforms(
-                    distinct_on: [form_name]
-                    where: { form_name: { _neq: "" } }
-                ) {
+                formDetails: pokemon_v2_pokemonforms(distinct_on: [form_name], where: {form_name: {_neq: ""}}) {
                     formName: form_name
                 }
                 typeDetails: pokemon_v2_pokemontypes {
@@ -106,9 +95,7 @@ query pokemonDetails($id: Int!) {
                         name
                     }
                 }
-                abilities: pokemon_v2_pokemonabilities(
-                    order_by: [{ slot: asc_nulls_first }]
-                ) {
+                abilities: pokemon_v2_pokemonabilities(order_by: [{slot: asc_nulls_first}]) {
                     slot
                     ability: pokemon_v2_ability {
                         name
@@ -124,6 +111,7 @@ query pokemonDetails($id: Int!) {
         }
     }
 }
+
 
 #   pokedexDetails: pokemon_v2_pokemondexnumbers(distinct_on: pokedex_id, where: {pokemon_v2_pokedex: {is_main_series: {_eq: true}}}) {
 #     pokedex: pokemon_v2_pokedex {

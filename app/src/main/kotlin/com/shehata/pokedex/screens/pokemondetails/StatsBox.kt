@@ -122,7 +122,10 @@ fun StatsButton(
         onClick = onClick,
         shape = roundedCornerRadius,
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(backgroundColor = currentColor.value),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = currentColor.value,
+            contentColor = if (selected) MaterialTheme.colors.primary else color
+        ),
         elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
         contentPadding = PaddingValues(0.dp)
     ) {
