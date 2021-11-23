@@ -2,10 +2,14 @@ package com.shehata.pokedex.screens.pokemondetails
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
@@ -18,39 +22,35 @@ fun EvolutionTree(
     painters: List<ImagePainter>
 ) {
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp, vertical = 5.dp)
     ) {
-        val evolutionMatrix = getEvolutionMatrix(evolutions)
+        val evolutionMatrix = remember { getEvolutionMatrix(evolutions) }
+        val max = remember { evolutionMatrix.maxByOrNull { it.size } }
 
         Row(
-            Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             evolutionMatrix.forEachIndexed { i, evolution ->
-                val painter = painters[i]
-                if (evolution.size > 1) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        evolution.forEach {
-                            Image(
-                                painter = painter,
-                                contentDescription = "Image of ${it.name}",
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(100.dp)
-                            )
-
-                        }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height((130 * (max?.size ?: 1)).dp)
+                        .weight(1f)
+                ) {
+                    evolution.forEachIndexed { j, evolution ->
+                        val painter = painters[i + j]
+                        Image(
+                            painter = painter,
+                            contentDescription = "Image of ${evolution.name}",
+                            modifier = Modifier
+                                .height(130.dp)
+                                .fillMaxWidth()
+                        )
                     }
-                } else {
-                    Image(
-                        painter = painter,
-                        contentDescription = "Image of ${evolution[0].name}",
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(100.dp)
-                    )
                 }
 
             }
@@ -60,22 +60,17 @@ fun EvolutionTree(
 
 private fun getEvolutionMatrix(evolutionList: List<Evolution>): List<List<Evolution>> {
     var list: MutableList<MutableList<Evolution>> = mutableListOf(mutableListOf())
+    list[0] = mutableListOf(evolutionList[0]) // first pokemon is always 1
+
     var j = 0
-
-    list[j++] = mutableListOf(evolutionList[0])
-
-
     for (i in 1 until evolutionList.size) {
-        list.add(mutableListOf())
-        if (evolutionList[i].previousEvolutionId == evolutionList[i - 1].previousEvolutionId) {
-            list[j].add(evolutionList[i])
+        if (evolutionList[i].previousEvolutionId != evolutionList[i - 1].previousEvolutionId) {
+            list.add(mutableListOf())
+            list[++j].add(evolutionList[i])
         } else {
-            list[i].add(evolutionList[i])
-            ++j
+            list[j].add(evolutionList[i])
         }
     }
-
-    Log.i("POKEMON", "${list}")
 
     return list
 }

@@ -20,19 +20,17 @@ class PokemonDetailsViewModel(
         get() = _uiState
 
     init {
-        actionsHandler(PokemonDetailsActions.GetPokemon)
+        savedStateHandle.get<Int>("pokemonId")?.let {
+            actionsHandler(PokemonDetailsActions.GetPokemon(it))
+        }
     }
 
     fun actionsHandler(action: PokemonDetailsActions) {
         when (action) {
             is PokemonDetailsActions.GetPokemon -> {
-                savedStateHandle.get<Int>("pokemonId")?.let { pokemonId ->
-                    getPokemon(pokemonId)
-                }
+                    getPokemon(action.id)
             }
             is PokemonDetailsActions.ChangeStat -> {
-//                _uiState.value?.selectedStatType = action.stat
-//                _uiState.value = _uiState.value
                 _uiState.value = _uiState.value?.copy(selectedStatType = action.stat)
             }
         }
@@ -60,7 +58,7 @@ data class PokemonDetailsState(
 )
 
 sealed class PokemonDetailsActions {
-    object GetPokemon : PokemonDetailsActions()
+    data class GetPokemon(val id: Int) : PokemonDetailsActions()
     data class ChangeStat(val stat: StatTypes) : PokemonDetailsActions()
 }
 

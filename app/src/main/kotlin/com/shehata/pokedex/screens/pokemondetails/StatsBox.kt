@@ -132,7 +132,7 @@ fun StatsButton(
         Text(
             text = text,
             fontSize = 22.sp,
-            fontWeight = FontWeight(600),
+            fontWeight = FontWeight(700),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxSize()

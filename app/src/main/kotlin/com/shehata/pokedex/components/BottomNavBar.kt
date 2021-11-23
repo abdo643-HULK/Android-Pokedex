@@ -1,5 +1,6 @@
 package com.shehata.pokedex.components
 
+import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.size
@@ -33,24 +34,24 @@ fun BottomNavBar(navController: NavController = rememberNavController()) {
         backgroundColor = MaterialTheme.colors.background,
         contentColor = MaterialTheme.colors.primary
     ) {
-        navItems.forEach { item ->
-            val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
+        navItems.forEach { screen ->
+            val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
 
             BottomNavigationItem(
                 icon = {
                     Icon(
-                        painter = painterResource(id = item.icon),
-                        contentDescription = item.title,
+                        painter = painterResource(id = screen.icon),
+                        contentDescription = screen.title,
                         modifier = Modifier.size(28.dp)
                     )
                 },
-                label = { Text(text = item.title) },
+                label = { Text(text = screen.title) },
                 alwaysShowLabel = true,
                 selected = selected,
                 unselectedContentColor = MaterialTheme.colors.primary,
                 selectedContentColor = MaterialTheme.colors.primaryVariant,
                 onClick = {
-                    navigate(navController, item)
+                    navigate(navController, screen)
                 }
             )
         }
