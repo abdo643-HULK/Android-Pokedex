@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Pokedex</string>
+
+    <!--Navigation-->
+    <string name="bottom_navigation_home_title">Pokemon</string>
+    <string name="bottom_navigation_favourites_title">Favourites</string>
+    <string name="bottom_navigation_profile_title">Profile</string>
+
+    <!-- ********************** Content Description **************************-->
+
+    <!--Navigation-->
+    <string name="cd_bottom_navigation_home_title">pokeball</string>
+    <string name="cd_bottom_navigation_favourites_title">heart</string>
+    <string name="cd_bottom_navigation_profile_title">your profile</string>
+
+
+    <string name="favourite_pokemon_add">Add Pokemon to Favourites</string>
+    <string name="favourite_pokemon_remove">Remove Pokemon from Favourites</string>
 </resources>
