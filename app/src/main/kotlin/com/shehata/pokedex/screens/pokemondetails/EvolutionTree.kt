@@ -40,7 +40,6 @@ fun EvolutionTree(
                                     .weight(1f)
                                     .height(100.dp)
                             )
-
                         }
                     }
                 } else {
@@ -59,7 +58,7 @@ fun EvolutionTree(
 }
 
 private fun getEvolutionMatrix(evolutionList: List<Evolution>): List<List<Evolution>> {
-    var list: MutableList<MutableList<Evolution>> = mutableListOf(mutableListOf())
+    val list: MutableList<MutableList<Evolution>> = mutableListOf(mutableListOf())
     var j = 0
 
     list[j++] = mutableListOf(evolutionList[0])
@@ -75,7 +74,7 @@ private fun getEvolutionMatrix(evolutionList: List<Evolution>): List<List<Evolut
         }
     }
 
-    Log.i("POKEMON", "${list}")
+    Log.i("POKEMON", "$list")
 
     return list
 }

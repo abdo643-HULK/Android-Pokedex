@@ -1,13 +1,8 @@
 package com.shehata.pokedex.screens.pokemondetails
 
-import android.util.Log
 import androidx.lifecycle.*
-import androidx.compose.runtime.setValue
-import coil.compose.ImagePainter
-import coil.request.ImageRequest
 import com.shehata.pokedex.models.PokemonDetails
 import com.shehata.pokedex.network.Network
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PokemonDetailsViewModel(

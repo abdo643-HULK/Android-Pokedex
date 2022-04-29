@@ -16,15 +16,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.navigation
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
 import com.shehata.pokedex.BottomNavigationItem
 import com.shehata.pokedex.NavigationItem
 import com.shehata.pokedex.screens.pokemondetails.PokemonDetailsScreen
 import com.shehata.pokedex.screens.pokemondetails.PokemonDetailsState
 import com.shehata.pokedex.screens.pokemondetails.PokemonDetailsViewModel
-import com.shehata.pokedex.screens.pokemondetails.StatTypes
 import com.shehata.pokedex.screens.pokemonlist.PokemonListScreen
 import com.shehata.pokedex.screens.pokemonlist.PokemonListState
 import com.shehata.pokedex.screens.pokemonlist.PokemonListViewModel
