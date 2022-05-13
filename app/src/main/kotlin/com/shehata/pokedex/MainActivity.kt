@@ -8,6 +8,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import com.shehata.pokedex.ui.screens.MainScreen
 import com.shehata.pokedex.ui.theme.PokedexTheme
 
 class MainActivity : ComponentActivity() {
