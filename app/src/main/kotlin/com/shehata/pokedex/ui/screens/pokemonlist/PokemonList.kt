@@ -3,6 +3,7 @@
 package com.shehata.pokedex.ui.screens.pokemonlist
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
@@ -37,23 +38,23 @@ fun PokemonListScreen(
     modifier: Modifier = Modifier
 ) {
     val orientation = LocalConfiguration.current.orientation
-    val pokemonsCellsPerRow = if (orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 3
-    val isFetching = state.isFetching
+
+    Log.d("MAINSCREEN", "RECOMPOSE")
 
     val listState = rememberLazyListState()
-    val listSize = listState.layoutInfo.totalItemsCount
-    val lastVisibleItemIndex = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-
+    val listSize by remember { derivedStateOf { listState.layoutInfo.totalItemsCount } }
+    val lastVisibleItemIndex by remember {
+        derivedStateOf { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0 }
+    }
+    val pokemonsCellsPerRow by remember(orientation) {
+        derivedStateOf { if (orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 3 }
+    }
     val fetchMore by remember(listSize, lastVisibleItemIndex) {
-        derivedStateOf {
-            lastVisibleItemIndex / listSize.toFloat() > 0.9f
-        }
+        derivedStateOf { lastVisibleItemIndex / listSize.toFloat() > 0.9f }
     }
 
-//    Log.i("POKEMON", "${state.pokemons}")
-
     LaunchedEffect(fetchMore) {
-        if (!isFetching && listSize != 0 && fetchMore) {
+        if (!state.isFetching && listSize != 0 && fetchMore) {
             fetchPokemon()
         }
     }
@@ -76,8 +77,11 @@ fun PokemonList(
     navigateToDetailScreen: (id: UInt) -> Unit,
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
-    val cellSize = Dp((screenWidth / cellsPerRow - 30).toFloat())
+
     val coroutineScope = rememberCoroutineScope()
+    val cellSize by remember {
+        derivedStateOf { Dp((screenWidth / cellsPerRow - 30).toFloat()) }
+    }
 
     Box(modifier.fillMaxSize()) {
         LazyColumn(
