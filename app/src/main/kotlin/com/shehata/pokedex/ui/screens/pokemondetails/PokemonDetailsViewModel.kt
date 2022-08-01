@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class PokemonDetailsViewModel(
     private val favouritesRepository: FavouritePokemonsRepository,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _uiState = MutableLiveData(PokemonDetailsState.Empty)
 
@@ -49,7 +49,6 @@ class PokemonDetailsViewModel(
                             }
                         }
                     }
-
                 }
             }
         }

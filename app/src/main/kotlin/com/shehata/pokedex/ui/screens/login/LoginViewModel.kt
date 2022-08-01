@@ -39,7 +39,6 @@ data class LoadingState private constructor(val status: Status, val msg: String?
         val IDLE = LoadingState(Status.IDLE)
         val LOADING = LoadingState(Status.RUNNING)
         fun error(msg: String?) = LoadingState(Status.FAILED, msg)
-
     }
 
     enum class Status {

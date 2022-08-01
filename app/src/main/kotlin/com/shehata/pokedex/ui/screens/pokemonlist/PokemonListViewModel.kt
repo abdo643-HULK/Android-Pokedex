@@ -1,9 +1,14 @@
 package com.shehata.pokedex.ui.screens.pokemonlist
 
-import androidx.lifecycle.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.shehata.pokedex.data.Network
 import com.shehata.pokedex.models.Pokemon
 import com.shehata.pokedex.models.PokemonGens
-import com.shehata.pokedex.data.Network
 import kotlinx.coroutines.launch
 
 private val POKEMONS_PER_GEN = arrayOf(151f, 100f, 135f, 107f, 156f, 72f, 88f, 89f)
@@ -14,18 +19,9 @@ class PokemonListViewModel(
     ViewModel() {
     private var genToFetch = 0
     private var fetchedGen = BooleanArray(POKEMONS_PER_GEN.size)
-    private var _uiState = MutableLiveData(PokemonListState())
 
-//    val uiState = mutableStateOf(PokemonListState())
-
-//    val n = LiveData<Pager(PagingConfig(
-//        pageSize = POKEMONS_PER_GEN[0].toInt()
-//    )) {
-//        fetchPokemon()
-//    }>
-
-    val uiState: LiveData<PokemonListState>
-        get() = _uiState
+    var uiState by mutableStateOf(PokemonListState())
+        private set
 
     init {
         fetchPokemon()
@@ -38,15 +34,12 @@ class PokemonListViewModel(
         if (fetchedGen[con]) return
 
         fetchedGen[genToFetch] = true
-
-        _uiState.value?.isFetching = true
-        _uiState.value = _uiState.value
+        uiState.isFetching = true
 
         viewModelScope.launch {
             val pokemon = Network.getPokemonByGeneration(PokemonGens[genToFetch]).sortedBy { it.id }
-            _uiState.value?.pokemons?.put(PokemonGens[genToFetch], pokemon)
-            _uiState.value?.isFetching = false
-            _uiState.value = _uiState.value
+            uiState.isFetching = false
+            uiState.pokemons[PokemonGens[genToFetch]] = pokemon
             ++genToFetch
         }
     }

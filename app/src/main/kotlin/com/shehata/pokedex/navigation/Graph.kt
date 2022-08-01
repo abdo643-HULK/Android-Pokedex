@@ -2,7 +2,6 @@
 
 package com.shehata.pokedex.navigation
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -26,7 +25,6 @@ import com.shehata.pokedex.ui.screens.pokemondetails.PokemonDetailsState
 import com.shehata.pokedex.ui.screens.pokemondetails.PokemonDetailsViewModel
 import com.shehata.pokedex.ui.screens.pokemondetails.PokemonDetailsViewModelFactory
 import com.shehata.pokedex.ui.screens.pokemonlist.PokemonListScreen
-import com.shehata.pokedex.ui.screens.pokemonlist.PokemonListState
 import com.shehata.pokedex.ui.screens.pokemonlist.PokemonListViewModel
 import com.shehata.pokedex.ui.screens.profile.ProfileScreen
 
@@ -120,7 +118,7 @@ private fun NavGraphBuilder.addPokemonListScreen(
         },
     ) {
         val vm: PokemonListViewModel = viewModel()
-        val uiState by vm.uiState.observeAsState(PokemonListState())
+        val uiState = vm.uiState
 
         PokemonListScreen(
             state = uiState,

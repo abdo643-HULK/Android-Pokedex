@@ -48,7 +48,7 @@ object Network {
             runQuery(PokemonDetailsQuery(id))?.pokemon
         }
 
-        @Suppress("NAME_SHADOWING")
+        @Suppress("NAME_SHADOWING", "BlockingMethodInNonBlockingContext")
         return pokemon?.let { pokemon ->
             PokemonDetails(
                 id = uIntID,
