@@ -39,8 +39,6 @@ fun PokemonListScreen(
 ) {
     val orientation = LocalConfiguration.current.orientation
 
-    Log.d("MAINSCREEN", "RECOMPOSE")
-
     val listState = rememberLazyListState()
     val listSize by remember { derivedStateOf { listState.layoutInfo.totalItemsCount } }
     val lastVisibleItemIndex by remember {
